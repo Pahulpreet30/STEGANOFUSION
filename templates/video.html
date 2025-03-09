@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steganography Online</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/new2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
+  </head>
+  <body>
+    {% include "navbar.html" %}
+    <div class="container">
+        <!-- Header remains the same -->
+        <div class="page-header d-flex align-items-center">
+          <i class="bi bi-play-circle-fill me-3" style="font-size: 2.5rem; margin-top: 0.2rem; color: #3b5998"></i>
+          <h1 style="font-size: 1.8rem; color: #3b5998; font-weight: bold">
+            Video Steganography: Uncover the Secret Messages in Video
+          </h1>
+        </div>
+
+        <!-- Tabs remain the same -->
+        <ul class="nav nav-tabs" id="tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+              <a class="nav-link active me-2" id="encode-tab" data-bs-toggle="tab" href="#encode" role="tab" aria-controls="encode" aria-selected="true">Encode</a>
+          </li>
+          <li class="nav-item" role="presentation">
+              <a class="nav-link" id="decode-tab" data-bs-toggle="tab" href="#decode" role="tab" aria-controls="decode" aria-selected="false">Decode</a>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="my-tab-content">
+          <!-- Encode Tab -->
+          <div class="tab-pane fade show active" id="encode" role="tabpanel" aria-labelledby="encode-tab">
+              <div>
+                  <h2>Encode message</h2>
+                  <p class="alert alert-info">
+                    To encode a message into Video, choose the Video you want to use, enter your text, and hit the <strong>Encode</strong> button.
+                    Save the last Video, it will contain your hidden message.
+                  </p>
+                  <form class="form" action="/video" method="POST" enctype="multipart/form-data" id="encodeForm">
+                    <input type="hidden" name="action" value="encode">
+                    <div class="form-group custom-file-upload">
+                        <label for="videoFile" class="custom-file-label">
+                            <span class="file-text">Choose Video File</span>
+                            <input class="form-control" type="file" name="videoFile" id="videoFile" accept="video/*" onchange="previewEncodeVideo()" required>
+                        </label>
+                    </div>
+                    <div id="videoPreview" class="mt-3">
+                        <video controls id="videoPlayer" style="display:none; width: 100%; height: auto;"></video>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <textarea class="form-control" id="encodeMessage" name="message" rows="3" placeholder="Enter your message here" required></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                      <label for="encodeKey">Enter Key:</label>
+                      <input type="password" id="encodeKey" name="key" class="form-control" placeholder="Enter key" autocomplete="new-password" required>
+                    </div>
+                    <div class="form-group mt-3">
+                      <label for="encodeFrame">Enter Frame:</label>
+                      <input type="number" id="encodeFrame" name="frame" class="form-control" placeholder="Enter frame" required>
+                    </div>
+                    <div class="form-group mt-3">
+                      <button type="submit" class="encode btn button-textarea" style="background-color: #5a9bd5; color: white; padding: 10px 20px; border-radius: 8px;">
+                        Encode
+                      </button>
+                    </div>
+                  </form>
+              </div>
+          </div>
+          
+          <!-- Decode Tab -->
+          <div class="tab-pane fade" id="decode" role="tabpanel" aria-labelledby="decode-tab">
+            <div>
+              <h2>Decode Video</h2>
+              <p class="alert alert-info">
+                To decode a hidden message from a Video, choose a Video and hit the <strong>Decode</strong> button.
+              </p>
+              <form class="form" id="decodeForm" action="/video" method="POST" enctype="multipart/form-data">
+                  <input type="hidden" name="action" value="decode">
+                  <div class="form-group custom-file-upload">
+                    <label for="decodeFile" class="custom-file-label">
+                      <span class="file-text">Choose Video File</span>
+                      <input class="form-control" type="file" name="decodeFile" id="decodeFile" accept="video/*" required>
+                    </label>
+                  </div>
+                  <div class="form-group mt-3">
+                      <button type="submit" class="decode btn button-textarea" style="background-color: #5a9bd5; color: white; padding: 10px 20px; border-radius: 8px;">
+                        Decode
+                      </button>
+                  </div>
+              </form>
+              
+              <!-- Display Decoded Message -->
+              {% if decoded_message %}
+                <div class="alert alert-success mt-3">
+                  <h3>Decoded Message:</h3>
+                  <p>{{ decoded_message }}</p>
+                </div>
+              {% elif error %}
+                <div class="alert alert-danger mt-3">
+                  <p>{{ error }}</p>
+                </div>
+              {% endif %}
+            </div>
+          </div> <!-- Decode tab-pane end -->
+          <footer>
+            <p>Made with <span class="heart">❤️</span> by Steganofusion</p>
+            <p>&copy; 2024 Steganofusion. All rights reserved.</p>
+          </footer>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Message encoded successfully!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+    <script>
+      function previewEncodeVideo() {
+        const videoInput = document.getElementById('videoFile');
+        const videoPlayer = document.getElementById('videoPlayer');
+        
+        const file = videoInput.files[0];
+        if (file) {
+            const fileURL = URL.createObjectURL(file);
+            videoPlayer.src = fileURL;
+            videoPlayer.style.display = 'block';
+        } else {
+            videoPlayer.style.display = 'none';
+        }
+      }
+
+
+
+      function encodeMessage(event) {
+        event.preventDefault(); // Prevent the default form submission
+      
+        const form = new FormData(document.querySelector(".form"));
+        fetch("/video", {
+          method: "POST",
+          body: form
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.blob();
+          }
+          throw new Error("Encoding failed");
+        })
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "encoded_audio.wav";
+          a.click();
+          URL.revokeObjectURL(url);
+          
+          // Show the success modal after download
+          const successModal = new bootstrap.Modal(document.getElementById("successModal"));
+          successModal.show();
+        })
+        .catch(error => console.error("Error encoding audio:", error));
+      }
+      
+    </script>
+  </body>
+</html>

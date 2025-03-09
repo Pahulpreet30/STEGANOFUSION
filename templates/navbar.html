@@ -1,0 +1,51 @@
+
+
+
+<nav>
+    <div class="nav__logo">
+      <a href="#">Steganofusion</a>
+    </div>
+    <ul class="nav__links">
+      <li class="link"><a href="/">Home</a></li>
+      <li class="link"><a href="/#about-section">About Us</a></li>
+      <li class="link"><a href="/audio">Audio</a></li>
+      <li class="link"><a href="/video">Video</a></li>
+      <li class="link"><a href="/image">Image</a></li>
+     
+      
+      {% if session.get('user') %}
+      <!-- Account Icon and Dropdown -->
+      <li class="link account-icon">
+        <a href="#" onclick="toggleAccountDetails(event)" class="account-initials">{{ session['user']['initials'] }}</a>
+        <!-- Account Details Dropdown -->
+        <div id="accountDetails" class="account-details-popup" style="display: none;">
+          <a href="#" onclick="toggleProfileDetails(event)">
+            <span class="icon">👤</span>
+            My Profile
+          </a>
+          <div id="profileDetails" class="profile-details" style="display: none;">
+            <p><strong>Name:</strong> {{ session['user']['name'] }}</p>
+            <p><strong>Email:</strong> {{ session['user']['email'] }}</p>
+          </div>
+          <div class="divider"></div>
+          <button onclick="logout()"><span class="icon">🔓</span>Log out</button>
+        </div>
+      </li>
+      {% else %}
+      <li class="link">
+        <a href="#" class="nav__btn" onclick="openModal()">Sign Up</a>
+      </li>
+      {% endif %}
+  </ul>
+</nav>
+    </ul>
+  </nav>
+
+
+
+  
+
+
+
+
+  

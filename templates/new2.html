@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steganography Online</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/new2.css') }}">
+     
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
+
+  </head>
+  <body>
+    
+      {% include "navbar.html" %}
+
+
+    
+    <div class="container">
+      <div class="page-header d-flex align-items-center">
+        <i
+          class="bi bi-mic-fill me-3"
+          style="font-size: 2.5rem; margin-top: 0.2rem; color: #3b5998"
+        ></i>
+        <h1 style="font-size: 1.8rem; color: #3b5998; font-weight: bold">
+          Audio Steganography: Uncover the Secret Messages in sound
+        </h1>
+      </div>
+      <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active me-2 " id="encode-tab" data-bs-toggle="tab" href="#encode" role="tab" aria-controls="encode" aria-selected="true">Encode</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="decode-tab" data-bs-toggle="tab" href="#decode" role="tab" aria-controls="decode" aria-selected="false">Decode</a>
+        </li>
+    </ul>
+    
+    <div class="tab-content" id="my-tab-content">
+        <div class="tab-pane fade show active" id="encode" role="tabpanel" aria-labelledby="encode-tab">
+            <div> <h2>Encode message</h2>
+                <p class="alert alert-info">
+                  To encode a message into an Audio, choose the Audio you want to use, enter your text, and hit the <strong>Encode</strong> button. <br/>
+                  Save the last Audio, it will contain your hidden message. <br/>
+                  Remember, the more text you want to hide, the larger the Audio has to be. In case the Audio is too small, you will be informed.<br/><br/>
+                  Neither the Audio nor the message you hide will be transmitted over the web, all the magic happens within your browser.
+                </p>
+                <form class="form" action="/audio" method="POST" enctype="multipart/form-data">
+                  <div class="form-group custom-file-upload">
+                      <label for="baseFile" class="custom-file-label">
+                          <span class="file-text">Choose Audio File</span>
+                          <input class="form-control" type="file" name="baseFile" id="baseFile" onchange="previewEncodeAudio()" required>
+                      </label>
+                  </div>
+                    <div id="audioPreview" class="mt-3">
+                        <audio controls id="audioPlayer" style="display:none;"></audio>
+                      </div>
+
+                      <div class="form-group mt-3">
+                        <textarea class="form-control" name="message" rows="3" placeholder="Enter your message here" required></textarea>
+                    </div>
+
+            
+                    <div class="form-group">
+                      <button type="submit" onclick="encodeMessage(event)" class="encode btn button-textarea" style="background-color: #5a9bd5; color: white; padding: 10px 20px; border-radius: 8px;">
+                        Encode
+                    </button>
+                    </div>
+                </form>
+            </div> <!-- Closed missing div here -->
+        </div> <!-- Encode tab-pane end -->
+
+        <div class="tab-pane fade" id="decode" role="tabpanel" aria-labelledby="decode-tab">
+           <div>
+            <h2>Decode Audio</h2>
+            <p class="alert alert-info">
+              To decode a hidden message from an Audio, choose an Audio and hit the <strong>Decode</strong> button.<br/><br/>
+              Neither the Audio nor the message that has been hidden will be transmitted over the web, all the magic happens within your browser.
+            </p>
+            <form class="form" id="decodeForm" action="javascript:void(0);" enctype="multipart/form-data">
+              <div class="form-group custom-file-upload">
+                <label for="decodeFile" class="custom-file-label">
+                  <span class="file-text">Choose Audio File</span>
+                  <input class="form-control" type="file" name="decodeFile" id="decodeFile" required>
+                </label>
+              </div>
+              <div class="form-group mt-3">
+                <button type="button" onclick="decodeAudio()" class="encode btn button-textarea" 
+                        style="background-color: #5a9bd5; color: white; padding: 10px 20px; border-radius: 8px;">
+                  Decode
+                </button>
+              </div>
+            </form>
+            <div class="clearfix"></div>
+          </div>
+          <div class="binary-decode" style="display: none;">
+            <h3>Hidden message</h3>
+            <textarea class="form-control message" style="word-wrap:break-word;"></textarea>
+          </div>
+          <div class="decode" style="display: none;">
+            <h3>Input</h3>
+            <canvas></canvas>
+        </div> <!-- Decode tab-pane end -->
+    </div> 
+    </div>
+
+    <footer>
+      <p>Made with <span class="heart">❤️</span> by Steganofusion</p>
+      <p>&copy; 2024 Steganofusion. All rights reserved.</p>
+    </footer>
+  </div>
+  
+
+
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Success</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Message encoded successfully!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+<script>
+
+
+  
+    function previewEncodeAudio() {
+      const fileInput = document.getElementById('baseFile');
+      const audioPlayer = document.getElementById('audioPlayer');
+
+      // Check if a file was selected
+      if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const audioURL = URL.createObjectURL(file); // Generate a URL for the audio file
+
+        // Set the audio source to the selected file and display the player
+        audioPlayer.src = audioURL;
+        audioPlayer.style.display = 'block';
+        audioPlayer.load();
+      }
+    }  
+
+
+    function decodeAudio() {
+      const fileInput = document.getElementById('decodeFile');
+      if (!fileInput.files.length) {
+        alert("Please select an audio file to decode.");
+        return;
+      }
+    
+      const formData = new FormData();
+      formData.append('decodeFile', fileInput.files[0]);
+    
+      fetch("/audio", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.querySelector(".binary-decode .message").value = data.message;
+        document.querySelector(".binary-decode").style.display = "block";
+      })
+      .catch(error => console.error("Error decoding audio:", error));
+    }
+    function encodeMessage(event) {
+      event.preventDefault(); // Prevent the default form submission
+    
+      const form = new FormData(document.querySelector(".form"));
+      fetch("/audio", {
+        method: "POST",
+        body: form
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.blob();
+        }
+        throw new Error("Encoding failed");
+      })
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "encoded_audio.wav";
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        // Show the success modal after download
+        const successModal = new bootstrap.Modal(document.getElementById("successModal"));
+        successModal.show();
+      })
+      .catch(error => console.error("Error encoding audio:", error));
+    }
+    
+  
+  </script>
+  
+  </body>
+</html>

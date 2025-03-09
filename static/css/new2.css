@@ -1,0 +1,307 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+}
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    margin-top: 50px;
+}
+
+
+.nav-tabs {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    /* margin-right: 40px; */
+    /* text-align: center; */
+
+  
+}
+
+.nav-tabs > .nav-item > .nav-link {
+    color: #555;
+    border-radius: 0;
+    /* margin-right: 20px; */
+    
+}
+
+.nav-tabs > .nav-item > .nav-link.active {
+    background-color: #5a9bd5; /* Active tab background */
+    color: white;               /* Active tab text */
+}
+
+ .nav-tabs > .nav-item {
+        margin-right: 15px; /* Space between tabs */
+      }
+      
+.nav-tabs > li > a {
+    color: #555;
+}
+
+.form {
+    margin-top: 20px;
+}
+
+.form-group input[type="file"],
+.form-group textarea {
+    margin-bottom: 15px;
+}
+
+.form-group button {
+    background-color: #5cb85c;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+    background-color: #4cae4c;
+}
+
+/* file upload styling */
+
+/* Custom file upload style */
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-file-label {
+    /* background-color: #5bc0de; */
+    background-color: #4191d3;
+    color: white;
+    padding: 12px 20px;
+    display: inline-block;
+    cursor: pointer;
+    /* border-radius: 50px; */
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+/* Subtle darker shade of blue on hover */
+.custom-file-label:hover {
+    /* /* background-color: #39a0c4; A darker, more elegant shade of blue */
+       background-color: #0f387a;  
+       /* background-color: #0e68a0;   */
+       /* background-color: #101cca;   */
+       transform: scale(1.02);
+       /* background-color: #4191d3; */
+      color: white; /* Keeping the text color white for contrast */ 
+}
+
+.custom-file-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.file-text {
+    margin-right: 10px;
+}
+/* form text area */
+
+
+.form-group textarea {
+    background-color: #f7f9fc; /* A soft background color */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px; /* Rounded corners to match overall layout */
+    padding: 15px; /* More padding for a comfortable typing experience */
+    font-size: 16px; /* Slightly larger font for readability */
+    color: #333; /* Darker text color */
+    width: 100%; /* Full width */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+
+/* Change on focus to highlight the active input field */
+.form-group textarea:focus {
+    border-color: #357dce; /* Match the button color */
+    box-shadow: 0 0 8px rgba(79, 148, 201, 0.6); /* Highlight with green glow */
+    outline: none; /* Remove the default outline */
+}
+/* button styling  */
+
+button.button-textarea:hover {
+    /* background-color: #3b5998; */
+    background-color: #041a3e;  
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+  }
+  
+
+  /* styling decoding alert  */
+  
+.alert {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+} */
+
+.clearfix {
+    clear: both;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #555;
+    margin-top: 20px;
+}
+
+.binary, .images, .binary-decode {
+    margin-top: 30px;
+}
+
+canvas {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+.clearfix {
+    clear: both;
+}
+
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #777;
+    font-size: 14px;
+}
+
+.footer-link {
+    color: #555;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+.modal-content {
+    border-radius: 10px; /* Rounded corners for the modal */
+  }
+  
+  .modal-header {
+    border-bottom: 2px solid #28a745; /* Green border at the bottom */
+  }
+  
+  .modal-body {
+    font-size: 1.2rem; /* Larger font size for the message */
+  }
+  
+  .btn-secondary {
+    background-color: #5a9bd5; /* Match the button color with your theme */
+    border: none; /* Remove border */
+  }
+  
+  .btn-secondary:hover {
+    background-color: #4a8ac5; /* Darker shade on hover */
+  }
+  
+
+  /* image preview  */
+
+  #previewImg {
+    max-width: 300px; /* Set a fixed width */
+    max-height: 300px; /* Set a fixed height */
+    width: auto;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+    border: 1px solid #ddd; /* Optional: Add a border for better appearance */
+    border-radius: 8px; /* Optional: Rounded corners */
+  }
+
+
+  /* for video */
+
+  video {
+    max-width: 100%; /* Ensure it scales down in smaller containers */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Block display to prevent spacing issues */
+    margin: 0 auto; /* Center align if needed */
+}
+
+
+  /* Custom styling for the key input form */
+  .key-input-container {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .key-input-container label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .key-input-container input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  .key-input-container input:focus {
+    border-color: #5a9bd5;
+    outline: none;
+  }
+
+  .key-input-container .input-group {
+    margin-bottom: 15px;
+  }
+
+  .key-input-container .input-group-text {
+    background-color: #5a9bd5;
+    color: white;
+    border: 1px solid #5a9bd5;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .key-input-container .btn {
+    background-color: #5a9bd5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
+  .key-input-container .btn:hover {
+    background-color: #4e8ab2;
+  }
+
+  /* Add some spacing between input fields */
+  .form-group {
+    margin-bottom: 20px;
+  }

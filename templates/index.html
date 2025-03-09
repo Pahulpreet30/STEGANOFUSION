@@ -1,0 +1,241 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Steganofusion</title>
+
+    
+  </head>
+  <body>
+    <nav>
+      <div class="nav__logo">
+        <a href="#">Steganofusion</a>
+      </div>
+      <ul class="nav__links">
+        <li class="link"><a href="/">Home</a></li>
+        <li class="link"><a href="#about-section">About Us</a></li>
+        <li class="link"><a href="/audio">Audio</a></li>
+        <li class="link"><a href="/video">Video</a></li>
+        <li class="link"><a href="/image">Image</a></li>
+       
+        
+        {% if session.get('user') %}
+        <!-- Account Icon and Dropdown -->
+        <li class="link account-icon">
+          <a href="#" onclick="toggleAccountDetails(event)" class="account-initials">{{ session['user']['initials'] }}</a>
+          <!-- Account Details Dropdown -->
+          <div id="accountDetails" class="account-details-popup" style="display: none;">
+            <a href="#" onclick="toggleProfileDetails(event)">
+              <span class="icon">👤</span>
+              My Profile
+            </a>
+            <div id="profileDetails" class="profile-details" style="display: none;">
+              <p><strong>Name:</strong> {{ session['user']['name'] }}</p>
+              <p><strong>Email:</strong> {{ session['user']['email'] }}</p>
+            </div>
+            <div class="divider"></div>
+            <button onclick="logout()"><span class="icon">🔓</span>Log out</button>
+          </div>
+        </li>
+        {% else %}
+        <li class="link">
+          <a href="#" class="nav__btn" onclick="openModal()">Sign Up</a>
+        </li>
+        {% endif %}
+    </ul>
+  </nav>
+      </ul>
+    </nav>
+
+    <section class="container">
+      <div class="content__container">
+        <h1>
+          Steganofusion<br />
+          <span class="heading__1">Hide Messages in</span><br />
+          <span class="heading__2">Images, Audio, and Video</span>
+        </h1>
+        <p>
+          Discover a new realm of secure communication with our innovative
+          steganography platform. Our cutting-edge technology allows you to
+          conceal messages within everyday media files—making your secrets
+          invisible to prying eyes.
+        </p>
+      </div>
+      <div class="image__container">
+        <img
+          src="static/assets/cybersecurity-flat-design-vector-illustrations_1288538-6752.avif"
+          alt="header"
+        />
+        <img
+          src="static/assets/data-protection-computer-security-safety-internet-technology-data-secure-illustration-suitable-for-many-purposes-vector.jpg"
+          alt="header"
+        />
+        <div class="image__content">
+          <ul>
+            <li>Protect Sensitive Information</li>
+            <li>Data hiding made easy</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<!-- After your existing hero section -->
+
+
+<!-- Features Section -->
+<section class="runway-features" id="about-section">
+  <div class="feature-container">
+    <h1 class="feature-heading">
+      Advancing security<br/>
+      with Steganofusion.
+    </h1>
+    <p class="feature-description">
+      Steganofusion is an applied research company building the next era of secure
+      communication, data protection, and privacy enhancement.
+    </p>
+    <div class="dropdown">
+      <button class="feature-button">Tools</button>
+      <div class="dropdown-content">
+          <a href="/image">Image Steganography</a>
+          <a href="/audio">Audio Steganography</a>
+          <a href="/video">Video Steganography</a>
+      </div>
+  </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <p>Made with <span class="heart">❤️</span> by Steganofusion</p>
+    <p>&copy; 2024 Steganofusion. All rights reserved.</p>
+  </div>
+</footer>
+
+
+
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h2>Sign Up</h2>
+          <form method="POST" action="{{ url_for('signup') }}">
+            <div class="input-box">
+              <label for="email1">Email:</label>
+              <input type="email" id="email1" name="email1" aria-describedby="emailHelp"
+                placeholder="Enter Email" required />
+            </div>
+            <div id="emailHelp" class="form-text">
+              We'll never share your email with anyone else.
+            </div>
+            
+      
+            <div class="row">
+              <div class="col">
+                <label for="FirstName">FirstName:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="FirstName"
+                  name="FirstName"
+                  placeholder="Enter Your First name"
+                  required
+                />
+              </div>
+              <div class="col">
+                <label for="FirstName">LastName:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="LastName"
+                  name="LastName"
+                  placeholder="Enter Your Last name"
+                />
+              </div>
+            </div>
+            
+            <div class="input-box">
+              <label for="Password1">Password:</label>
+              <input type="password" id="Password1" name="Password1" placeholder="Enter Password" required />
+            </div>
+            
+            <div class="input-box">
+              <label for="Password2">Password (Confirm):</label>
+              <input type="password" id="Password2" name="Password2" placeholder="Confirm Password" required />
+            </div>
+      
+            <div class="login-redirect">
+              Already have an account? <a href="#" onclick="showLoginModal()">Login</a>
+            </div>
+      
+            <button type="submit">Sign Up</button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                {{ message }}
+                <button type="button" class="close-flash" onclick="this.parentElement.style.display='none'">&times;</button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+
+      <div id="loginModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeLoginModal()">&times;</span>
+          <h2>Login</h2>
+          <form method="POST" action="{{ url_for('login') }}">
+            <div class="mb-3">
+              <label for="Email1" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email1"
+                name="email1"
+                aria-describedby="emailHelp"
+                placeholder="Enter Email"
+                
+              />
+              <div id="emailHelp" class="form-text">
+                We'll never share your email with anyone else.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="Password2" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="Password1"
+                name="Password1"
+                 placeholder="Enter Password"
+              />
+            </div>
+          
+            <button type="submit" class="btn btn-primary d-block w-100">
+              Login
+            </button>
+            <div class="text-center mt-3">
+              <small>Don't have an account? <a href="#" onclick="openRegistrationModalFromLogin()">Sign up</a></small>
+            </div>
+          </form>
+        </div>
+      </div>
+    
+      
+      <!-- Add this JavaScript for handling flash messages -->
+     <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+
+
+    </body>
+    </html>
